@@ -11,6 +11,9 @@ import java.net.Socket;
 import java.util.Scanner;
 
 import entidades.Pessoa;
+import java.io.File;
+import java.io.ObjectInputStream;
+import java.util.Arrays;
 
 public class PessoasInputStream extends InputStream {
 
@@ -43,9 +46,21 @@ public class PessoasInputStream extends InputStream {
         return pessoas;
     }
 
+    /**
+     *
+     * @return
+     */
     public Pessoa[] readFile() {
+        File fi;
         try {
-            FileInputStream fin = new FileInputStream(this.path);
+            fi = new File(this.path);
+
+            if (fi.exists()) {
+                ObjectInputStream objIn = new ObjectInputStream(new FileInputStream(fi));
+
+                System.out.println(Arrays.toString(pessoas = (Pessoa[]) objIn.readObject()));
+            }
+            /*FileInputStream fin = new FileInputStream(this.path);
             int i = 0;
             String val = "";
             String vall[] = new String[3];
@@ -70,8 +85,8 @@ public class PessoasInputStream extends InputStream {
                 } else {
                     System.out.println("Erro ao identificar:" + valll[0] + " " + valll[1]);
                 }
-            }
-        } catch (Exception e) {
+            }*/
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println(e);
         }
         return pessoas;

@@ -11,6 +11,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import entidades.Pessoa;
+import java.io.File;
+import java.io.ObjectOutputStream;
 
 public class PessoasOutputStream extends OutputStream {
 
@@ -51,13 +53,23 @@ public class PessoasOutputStream extends OutputStream {
 
     public void writeFile() {
         // envia os dados de um conjunto (array) de Pessoas
+        File fi;
         try {
-            FileOutputStream fout = new FileOutputStream(this.path);
-            String s = "Nome: " + pessoas[0].getNome() + "\nCPF: " + pessoas[0].getCpf() + "\nIdade: "
-                    + pessoas[0].getIdade();
-            byte b[] = s.getBytes();// converting string into byte array
-            fout.write(b);
-            fout.close();
+            fi = new File(this.path);
+            
+            if (!fi.exists()) fi.createNewFile();
+            
+            ObjectOutputStream objOut = new ObjectOutputStream(new FileOutputStream(fi));
+            
+            objOut.writeObject(pessoas);
+            objOut.close();
+            
+//            FileOutputStream fout = new FileOutputStream(this.path);
+//            String s = "Nome: " + pessoas[0].getNome() + "\nCPF: " + pessoas[0].getCpf() + "\nIdade: "
+//                    + pessoas[0].getIdade();
+//            byte b[] = s.getBytes();// converting string into byte array
+//            fout.write(b);
+//            fout.close();
             System.out.println("success...");
         } catch (Exception e) {
             System.out.println(e);

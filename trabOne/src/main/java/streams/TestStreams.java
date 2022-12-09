@@ -8,7 +8,8 @@ public class TestStreams {
 	public static void main(String[] args) throws IOException {
 
 		Pessoa[] pessoas = new Pessoa[1];
-                String PATH = "CAMINHO_COMPLETO_ATE_ARQUIVO/NOME_ARQUIVO.TXT";
+                //String PATH = "CAMINHO_COMPLETO_ATE_ARQUIVO/NOME_ARQUIVO.TXT";
+                String PATH = "serial.txt";
 
                 PessoasInputStream pis = new PessoasInputStream(pessoas, System.in, PATH);
 		pessoas = pis.readSystem();
