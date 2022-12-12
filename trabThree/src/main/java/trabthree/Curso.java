@@ -13,7 +13,7 @@ import java.util.ArrayList;
  *
  * @author israel
  */
-public class Curso extends UnicastRemoteObject implements ICurso{
+public class Curso extends UnicastRemoteObject implements ICurso {
 
     private String nome;
     private String semInicio;
@@ -64,12 +64,9 @@ public class Curso extends UnicastRemoteObject implements ICurso{
      */
     @Override
     public void addAluno(Aluno aluno) {
-        if (aluno.getCurso().toUpperCase().equals(this.getNome().toUpperCase())) {
-            this.alunos.add(aluno);
-            System.out.println("Aluno adicionado");
-        } else {
-            System.out.println("Não possível adicionar esse aluno, os cursos são diferentes");
-        }
+        this.alunos.add(aluno);
+        System.out.println("Aluno adicionado");
+        System.out.println("Aluno: " + aluno.toString());
     }
 
     /**
@@ -116,32 +113,24 @@ public class Curso extends UnicastRemoteObject implements ICurso{
         aluno.setNome(nome);
         aluno.setSem(semestre);
         this.addAluno(aluno);
-    }
+    } 
 
     /**
      * Retornar todos os alunos para o usuário
-     * 
+     *
      * @return array de objetos
      */
     @Override
     public ArrayList<Object> retAll() {
         System.out.println("Retornando todos os alunos");
-        return this.alunos;
-    }
-    
-    /**
-     * Mostra todos alunos desse curso
-     * Erro: imprime do lado do servidor ao inves do lado do cliente
-     */
-    @Override
-    public void showAll() {
         this.alunos.forEach((n) -> System.out.println(n));
+        return this.alunos;
     }
 
     /**
      * @return the nome
      */
-    public String getNome() {
+    private String getNome() {
         return nome;
     }
 

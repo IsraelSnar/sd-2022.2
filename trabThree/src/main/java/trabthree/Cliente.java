@@ -20,7 +20,8 @@ public class Cliente {
     public static void main(String[] args) throws RemoteException {
         String objName = "//localhost/three";
         Scanner leitor = new Scanner(System.in);
-        String nome;
+        String nome, a;
+        String b[];
         int ss;
         int in;
         ICurso three = null;
@@ -43,53 +44,66 @@ public class Cliente {
                     + " 1: Aluno de graduação\n"
                     + " 2: Aluno de Pós-graduação\n"
                     + "2 - Mostrar alunos");
-            String a = leitor.nextLine();
-            String b[] = a.split(" ");
+            a = leitor.nextLine();
+            b = a.split(" ");
+            if (b.length > 1) {
+                System.out.println("Foi informado dois números");
+            }
 
             try {
                 p = Integer.parseInt(b[0]);
             } catch (NumberFormatException e) {
                 System.err.println("Erro na escrita dos números o formato é: * *\ncada * representa número, não informe por extenso\ninforme o número com espaço");
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
-            switch (p) {
-                case -1:
-                    break;
-                case 0:
-                    System.out.println("Saindo...");
-                    System.exit(0);
-                case 1:
-                    try {
+            OADR:
+            if (p == 0) {
+                System.exit(0);
+            } else if (p == 1) {
+                try {
                     s = Integer.parseInt(b[1]);
                 } catch (NumberFormatException e) {
                     System.err.println("Erro na escrita dos números, informe apenas números, não informe por extenso ou adicione alguma letra");
+                    break OADR;
                 } catch (ArrayIndexOutOfBoundsException e) {
                     System.err.println("Erro, você só informou um número\nInforme no seguinte formato: * *\nCada * representa um número, informe a opção de criar aluno e depois qual aluno");
+                    break OADR;
                 }
-                switch (s) {
-                    case 0:
-                        // Aluno 
+                if (s == 0) {
+                    try {
                         System.out.println("Informe nome do aluno");
                         nome = leitor.nextLine();
                         three.createAluno(nome);
-                        break;
-                    case 1:
-                        try {
+                    } catch (InputMismatchException e) {
+                        System.out.println("Você não informou número");
+                        break OADR;
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                        break OADR;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        break OADR;
+                    }
+                } else if (s == 1) {
+                    try {
                         System.out.println("Informe nome do aluno");
                         nome = leitor.nextLine();
                         System.out.println("Informe semestre do aluno");
                         ss = leitor.nextInt();
                         System.out.println("Aluno de iniciação cientifica?\n1 - SIM\n2 - NÃO");
                         in = leitor.nextInt();
-                        three.createAlunoGrad(nome, ss, ((in == 1)));
+                        three.createAlunoGrad(nome, ss, (in == 1));
                     } catch (InputMismatchException e) {
                         System.out.println("Você não informou número");
+                        break OADR;
                     } catch (Exception e) {
                         e.printStackTrace();
+                        break OADR;
                     }
-                    break;
-                    case 2:
-                        try {
+                } else if (s == 2) {
+                    try {
                         System.out.println("Informe nome do aluno");
                         nome = leitor.nextLine();
                         System.out.println("Informe semestre do aluno");
@@ -97,27 +111,20 @@ public class Cliente {
                         three.createAlunoPosGrad(nome, ss);
                     } catch (InputMismatchException e) {
                         System.out.println("Você não informou número");
+                        break OADR;
                     } catch (Exception e) {
                         e.printStackTrace();
+                        break OADR;
                     }
-                    break;
-                    default:
-                        System.err.println("Você informou número errado");
-                        three.showAll();
-                        break;
+                } else {
+                    System.out.println("Você informou número errado, as opções são: 0 1 2");
                 }
-                break;
-                case 2:
-                    three.retAll().forEach(n -> System.out.println(n));
-                    if (three.retAll().isEmpty()) {
-                        System.out.println("Vazio");
-                        three.showAll();
-                    }
-                    break;
-                default:
-                    System.err.println("ALgo de errado não está certo");
-                    break;
-            }
+            } else if (p == 2) {
+                three.retAll().forEach(n -> System.out.println(n));
+                if (three.retAll().isEmpty()) {
+                    System.out.println("Vazio");
+                }
+            } else break OADR;
         }
     }
 }

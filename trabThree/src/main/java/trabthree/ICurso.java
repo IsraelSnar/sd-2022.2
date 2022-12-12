@@ -23,6 +23,4 @@ public interface ICurso extends Remote {
     public void createAlunoPosGrad(String nome, int semestre) throws RemoteException;
 
     public ArrayList<Object> retAll() throws RemoteException;
-
-    public void showAll() throws RemoteException;
 }
